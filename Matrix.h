@@ -2,9 +2,9 @@
 
 class Matrix
 {
-    unsigned int li;
-    unsigned int co;
-    double array;
+    const unsigned int li;
+    const unsigned int co;
+    double* array;
 
 public:
     Matrix();

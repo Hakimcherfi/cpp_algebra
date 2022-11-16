@@ -1,29 +1,33 @@
 #include "Matrix.h"
 
-Matrix::Matrix()
+Matrix::Matrix():li(3),co(4)
 {
-    li = 1;
-    co = 1;
-    array = 0;
-}
-
-void Matrix::afficher() const
-{
-    std::cout <<array;
+    array = 
     for (unsigned int i = 0; i < li; i++)
     {
         for (unsigned int j = 0; j < co; j++)
         {
-            ;//std::cout << array[i][j];
+            array[i][j] = i+j;
+        }
+    }
+}
+
+void Matrix::afficher() const
+{
+    for (unsigned int i = 0; i < li; i++)
+    {
+        for (unsigned int j = 0; j < co; j++)
+        {
+            std::cout << array[i][j];
         }
         std::cout << std::endl;
     }
 }
-
+/*
 Matrix::Matrix(Matrix const &autre)
 {
 }
-
+*/
 Matrix::~Matrix()
 {
 }

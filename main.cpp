@@ -4,7 +4,7 @@
 int main()
 {
     std::cout << "hello" <<std::endl;
-    Matrix myMatrix();
+    Matrix myMatrix;
     myMatrix.afficher();
     return 0;
 }
