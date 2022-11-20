@@ -13,18 +13,21 @@ public:
     void afficher() const;
     ~Matrix();
     Matrix &operator=(Matrix const &autre);
-    //+matrice
     Matrix &operator+=(Matrix const &autre);
+    Matrix &operator+=(double const &scalaire);
+    Matrix &operator-=(Matrix const &autre);
+    Matrix &operator-=(double const &scalaire);
+    Matrix &operator*=(double const &scalaire);
     double *operator[](unsigned int li);
-    //+ scalaire
     //*matrice
-    //*scalaire
     //  /matrice
-    //-matrice
-    //-scalaire
     Matrix T() const; // transpose
     // determinant
     double trace() const;
 };
 
 Matrix operator+(Matrix const &a, Matrix const &b);
+Matrix operator+(Matrix const &a, double const &scalaire);
+Matrix operator-(Matrix const &a, Matrix const &b);
+Matrix operator-(Matrix const &a, double const &scalaire);
+Matrix operator*(Matrix const &a, double const &scalaire);

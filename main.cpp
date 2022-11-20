@@ -12,6 +12,8 @@ int main()
     troisiemeMatrice = myMatrix;
     troisiemeMatrice.afficher();
     troisiemeMatrice[0][0] = 7;
+    troisiemeMatrice-=2;
+    troisiemeMatrice*=2;
     troisiemeMatrice.afficher();
     std::cout << troisiemeMatrice[1][0] << std::endl;
     return 0;

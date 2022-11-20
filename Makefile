@@ -8,4 +8,4 @@ main: Matrix.o main.cpp
 	$(CC) $(tags) $< -c $@
 
 clean:
-	rm main
+	rm main *.o

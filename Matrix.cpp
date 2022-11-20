@@ -35,7 +35,7 @@ void Matrix::afficher() const
     {
         for (unsigned int j = 0; j < co; j++)
         {
-            std::cout << array[i][j];
+            std::cout << array[i][j] << " ";
         }
         std::cout << std::endl;
     }
@@ -43,7 +43,6 @@ void Matrix::afficher() const
 
 Matrix::Matrix(Matrix const &autre) : li(autre.li), co(autre.co)
 {
-    //*this=autre;
     array = new double *[li];
     for (unsigned int i = 0; i < li; i++)
     {
@@ -105,6 +104,18 @@ Matrix &Matrix::operator+=(Matrix const &autre)
     return *this;
 }
 
+Matrix &Matrix::operator*=(double const &scalaire)
+{
+    for (unsigned int i = 0; i < li; i++)
+    {
+        for (unsigned int j = 0; j < co; j++)
+        {
+            array[i][j] = array[i][j] * scalaire;
+        }
+    }
+    return *this;
+}
+
 Matrix operator+(Matrix const &a, Matrix const &b)
 {
     Matrix result(a);
@@ -115,4 +126,50 @@ Matrix operator+(Matrix const &a, Matrix const &b)
 double *Matrix::operator[](unsigned int li)
 {
     return array[li];
+}
+
+Matrix operator*(Matrix const &a, double const &scalaire)
+{
+    Matrix result(a);
+    result *= scalaire;
+    return a;
+}
+
+Matrix &Matrix::operator+=(double const &scalaire)
+{
+    for (unsigned int i = 0; i < li; i++)
+    {
+        for (unsigned int j = 0; j < co; j++)
+        {
+            array[i][j] += scalaire;
+        }
+    }
+    return *this;
+}
+
+Matrix operator+(Matrix const &a, double const &scalaire)
+{
+    Matrix result(a);
+    result += scalaire;
+    return result;
+}
+
+Matrix &Matrix::operator-=(double const &scalaire)
+{
+    return (*this) += (-scalaire);
+}
+
+Matrix &Matrix::operator-=(Matrix const &autre)
+{
+    return (*this) += (autre * (-1));
+}
+
+Matrix operator-(Matrix const &a, Matrix const &b)
+{
+    return a + (b * (-1));
+}
+
+Matrix operator-(Matrix const &a, double const &scalaire)
+{
+    return a + (-1 * scalaire);
 }
