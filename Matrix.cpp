@@ -80,7 +80,6 @@ double Matrix::trace() const
 
 Matrix::~Matrix()
 {
-    std::cout << "destructor" << std::endl;
     for (unsigned int i = 0; i < li; i++)
     {
         delete[] array[i];
@@ -172,4 +171,108 @@ Matrix operator-(Matrix const &a, Matrix const &b)
 Matrix operator-(Matrix const &a, double const &scalaire)
 {
     return a + (-1 * scalaire);
+}
+
+bool Matrix::isEqual(Matrix const &b) const
+{
+    if (li == b.li && co == b.co)
+    {
+        for (unsigned int i = 0; i < li; i++)
+        {
+            for (unsigned int j = 0; j < co; j++)
+            {
+                if (array[i][j] != b.array[i][j])
+                {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+    return false;
+}
+bool operator==(Matrix const &a, Matrix const &b)
+{
+    return a.isEqual(b);
+}
+
+bool Matrix::isSymetric() const
+{
+    if (li == co)
+    {
+        if (*this == this->T())
+            return true;
+    }
+    return false;
+}
+
+double scalarProduct(double const *v1, double const *v2, unsigned int const &n)
+{
+    double result(0);
+    for (unsigned int i = 0; i < n; i++)
+    {
+        result += (v1[i] * v2[i]);
+    }
+    return result;
+}
+
+Matrix &Matrix::operator*=(Matrix const &b)
+{
+    if (co == b.co && co == b.li) // uniquement produit avec matrice carre
+    {
+        Matrix a(*this);
+        Matrix bT(b.T());
+        for (unsigned int i = 0; i < li; i++)
+        {
+            for (unsigned int j = 0; j < b.co; j++)
+            {
+                array[i][j] = scalarProduct(a[i], (bT)[j], co);
+            }
+        }
+    }
+    return *this;
+}
+
+Matrix operator*(Matrix const &a, Matrix const &b)
+{
+    // matche uniquement si b est carree
+    Matrix result(a);
+    result *= b;
+    return result;
+}
+
+Matrix Matrix::getSubmatrix(unsigned int const &li, unsigned int const &co) const
+{
+    Matrix result(this->li - 1, this->co - 1);
+    for (unsigned int i = 0; i < li; i++)
+    {
+        for (unsigned int j = 0; j < co; j++)
+        {
+            ; // que mettre ?
+        }
+    }
+    return result;
+}
+double Matrix::determinant() const
+{
+    if (li == co)
+    {
+        if (this->li == 1) // matrix is scalar
+        {
+            return this->array[0][0];
+        }
+        else // matrix is not scalar
+        {
+            double res(0);
+            for (unsigned int i = 0; i < co; i++)
+            {
+                res += this->getSubmatrix(1, i).determinant() * pow(-1, i);
+            }
+            return res;
+        }
+    }
+    else
+    {
+        return 0;
+    }
 }
