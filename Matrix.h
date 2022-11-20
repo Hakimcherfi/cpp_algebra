@@ -2,24 +2,29 @@
 
 class Matrix
 {
+private:
     const unsigned int li;
     const unsigned int co;
-    double* array;
+    double **array;
 
 public:
-    Matrix();
+    Matrix(unsigned int li = 2, unsigned int co = 2);
     Matrix(Matrix const &autre);
     void afficher() const;
     ~Matrix();
-
+    Matrix &operator=(Matrix const &autre);
     //+matrice
+    Matrix &operator+=(Matrix const &autre);
+    double *operator[](unsigned int li);
     //+ scalaire
     //*matrice
     //*scalaire
-    // /matrice
+    //  /matrice
     //-matrice
     //-scalaire
-    // transposition
+    Matrix T() const; // transpose
     // determinant
-    // trace
+    double trace() const;
 };
+
+Matrix operator+(Matrix const &a, Matrix const &b);
