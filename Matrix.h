@@ -18,8 +18,9 @@ public:
     Matrix &operator-=(double const &scalaire);
     Matrix &operator*=(double const &scalaire);
     Matrix &operator*=(Matrix const &autre);
+    Matrix &operator/=(double const &scalaire);
     double *operator[](unsigned int li);
-    Matrix getSubmatrix(unsigned int const &li, unsigned int const &co) const;
+    Matrix submatrix(unsigned int const &li, unsigned int const &co) const;
     bool isEqual(Matrix const &b) const;
     bool isSymetric() const;
     void afficher() const;
@@ -45,3 +46,4 @@ Matrix operator*(Matrix const &a, double const &scalaire);
 Matrix operator*(Matrix const &a, Matrix const &b);
 bool operator==(Matrix const &a, Matrix const &b);
 double scalarProduct(double const *v1, double const *v2, unsigned int const &n);
+Matrix operator/(Matrix const &a, double const &scalaire);

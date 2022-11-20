@@ -191,6 +191,7 @@ bool Matrix::isEqual(Matrix const &b) const
     }
     return false;
 }
+
 bool operator==(Matrix const &a, Matrix const &b)
 {
     return a.isEqual(b);
@@ -241,18 +242,43 @@ Matrix operator*(Matrix const &a, Matrix const &b)
     return result;
 }
 
-Matrix Matrix::getSubmatrix(unsigned int const &li, unsigned int const &co) const
+Matrix Matrix::submatrix(unsigned int const &li, unsigned int const &co) const
 {
     Matrix result(this->li - 1, this->co - 1);
-    for (unsigned int i = 0; i < li; i++)
+    for (unsigned int i = 0; i < this->li; i++)
     {
-        for (unsigned int j = 0; j < co; j++)
+        if (i < li)
         {
-            ; // que mettre ?
+            for (unsigned int j = 0; j < this->co; j++)
+            {
+                if (j < co)
+                {
+                    result.array[i][j] = this->array[i][j];
+                }
+                if (j > co)
+                {
+                    result.array[i][j - 1] = this->array[i][j];
+                }
+            }
+        }
+        if (i > li)
+        {
+            for (unsigned int j = 0; j < this->co; j++)
+            {
+                if (j < co)
+                {
+                    result.array[i - 1][j] = this->array[i][j];
+                }
+                if (j > co)
+                {
+                    result.array[i - 1][j - 1] = this->array[i][j];
+                }
+            }
         }
     }
     return result;
 }
+
 double Matrix::determinant() const
 {
     if (li == co)
@@ -266,7 +292,7 @@ double Matrix::determinant() const
             double res(0);
             for (unsigned int i = 0; i < co; i++)
             {
-                res += this->getSubmatrix(1, i).determinant() * pow(-1, i);
+                res += pow(-1, i) * this->array[0][i] * this->submatrix(0, i).determinant();
             }
             return res;
         }
@@ -275,4 +301,16 @@ double Matrix::determinant() const
     {
         return 0;
     }
+}
+
+Matrix &Matrix::operator/=(double const &scalaire)
+{
+    return (*this) *= (1 / scalaire);
+}
+
+Matrix operator/(Matrix const &a, double const &scalaire)
+{
+    Matrix result(a);
+    result/=scalaire;
+    return result;
 }
