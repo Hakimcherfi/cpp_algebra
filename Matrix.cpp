@@ -292,7 +292,10 @@ double Matrix::determinant() const
             double res(0);
             for (unsigned int i = 0; i < co; i++)
             {
-                res += pow(-1, i) * this->array[0][i] * this->submatrix(0, i).determinant();
+                if (this->array[0][i] != 0)
+                {
+                    res += pow(-1, i) * this->array[0][i] * this->submatrix(0, i).determinant();
+                }
             }
             return res;
         }
@@ -311,6 +314,6 @@ Matrix &Matrix::operator/=(double const &scalaire)
 Matrix operator/(Matrix const &a, double const &scalaire)
 {
     Matrix result(a);
-    result/=scalaire;
+    result /= scalaire;
     return result;
 }
