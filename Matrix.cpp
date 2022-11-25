@@ -318,36 +318,112 @@ Matrix operator/(Matrix const &a, double const &scalaire)
     return result;
 }
 
+void Matrix::permutRows(unsigned int const &r1, unsigned int const &r2)
+{
+    if (r1 <= li && r2 <= li)
+    {
+        double *permutMatrix = new double[co];
+        permutMatrix = array[r1];
+        array[r1] = array[r2];
+        array[r2] = permutMatrix;
+    }
+    else
+    {
+        std::cout << "rows out of range, no permutation applied" << std::endl;
+    }
+}
+
 Matrix Matrix::solve(Matrix const &b) const
 {
-    Matrix triangular = *this;
-    Matrix b2 = b;
-    double pivot;
     if (this->li == b.li)
     {
+        Matrix triangular = *this;
+        Matrix b2 = b;
+        double pivot;
         for (unsigned int i = 0; i < li; i++)
         {
-            
             for (unsigned int j = i + 1; j < li; j++)
-            {   
-                pivot = (triangular[j][i]) / (triangular[i][i]);
-                std::cout<<"ligne "<<i <<" pivot ligne "<< j <<" : "<<pivot<<std::endl;
-                b2[j][0] = b2[j][0]-pivot*b2[i][0];
-                for (unsigned int k = 0; k < co; k++)
+            {
+                if (triangular[i][i] == 0) // On a un zero : on doit permuter des lignes
                 {
-                    triangular[j][k] = triangular[j][k] - pivot * triangular[i][k];
+                    for (unsigned int k = i + 1; k < li; k++)
+                    {
+                        if (triangular[k][i] != 0)
+                        {
+                            triangular.permutRows(i, k);
+                            b2.permutRows(i, k);
+                            k = li;
+                        }
+                    }
+                }
+                if (triangular[i][i] != 0)
+                {
+                    pivot = (triangular[j][i]) / (triangular[i][i]);
+                    if (pivot != 0)
+                    {
+                        b2[j][0] = b2[j][0] - pivot * b2[i][0];
+                        for (unsigned int k = 0; k < co; k++)
+                        {
+                            triangular[j][k] = triangular[j][k] - pivot * triangular[i][k];
+                        }
+                    }
                 }
             }
         }
-        Matrix res(co,1);
-        for(unsigned int i=0;i<li;i++)
+        Matrix res(co, 1);
+        for (unsigned int i = co; i < li; i++) // check if there is a solution
         {
-            ;
+            if (b2[i][0] != 0) // true if no solution
+            {
+                std::cout << "No solution" << std::endl;
+                return Matrix(this->co, 1);
+            }
         }
-        return triangular;
+        std::cout << "Solution exist" << std::endl;
+        double previousComponent;
+        for (unsigned int i = this->co; i > 0; i--)
+        {
+            previousComponent = 0;
+            pivot = triangular[i - 1][i - 1];
+            if (pivot != 0) // check if infinity of solutions
+            {
+                for (unsigned int j = this->co; j > i; j--)
+                {
+                    previousComponent += triangular[i - 1][j - 1] * res[j - 1][0];
+                }
+                res[i - 1][0] = (b2[i - 1][0] - previousComponent) / pivot;
+            }
+            else
+            {
+                std::cout << "Infinity of solutions" << std::endl;
+                res[i - 1][0] = 0;
+            }
+        }
+        return res;
     }
-    else{
-        ;//pas de solution
-        return Matrix(this->co,1);
+    else
+    {
+        ; // pas de solution
+        return Matrix(this->co, 1);
     }
+}
+
+Matrix Matrix::transpose() const
+{
+    Matrix result(this->co,this->li);
+    for (unsigned int i;i<li;i++)
+    {
+        for(unsigned int j;j<co;j++)
+        {
+            result[j][i] = this->array[i][j];
+        }
+    }
+    return result;
+
+}
+
+Matrix Matrix::solveLS(Matrix const& b) const
+{
+    Matrix transposed = this->transpose();
+    return Matrix(transposed*(*this)).solve(transposed*b);
 }

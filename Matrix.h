@@ -29,14 +29,16 @@ public:
     Matrix T() const; // transpose
     //  * matrice non carree
     //  / matrice
-    //  determinant
     //  inverse
     //  allocations plusieurs valeurs
     //  vecteurs propres et valeurs propres
     //
+    Matrix transpose() const;
     double trace() const;
     double determinant() const;
-    Matrix solve(Matrix const& vecteur) const;
+    void permutRows(unsigned int const &r1, unsigned int const &r2);
+    Matrix solve(Matrix const &vecteur) const;
+    Matrix solveLS(Matrix const& vector) const;
 };
 
 Matrix operator+(Matrix const &a, Matrix const &b);
