@@ -21,32 +21,26 @@ int main()
     double v1[4] = {1, 2, 3, 4};
     double v2[4] = {1, 1, 1, 1};
     std::cout << "res " << scalarProduct(v1, v2, 4) << std::endl;
-    Matrix a, b;
+    
+    
+    
+    Matrix a(3,3);
+    Matrix b(3,1);
     a[0][0] = 1;
     a[0][1] = 2;
-    a[1][0] = 3;
-    a[1][1] = 4;
-    b[0][0] = 5;
-    b[0][1] = 7;
-    b[1][0] = 6;
-    b[1][1] = 8;
+    a[0][2] = 3;
+    a[1][0] = 4;
+    a[1][1] = 5;
+    a[1][2] = 6;
+    a[2][0] = 7;
+    a[2][1] = 8;
+    a[2][2] = 9;
+    b[0][0] = 1;
+    b[1][0] = 2;
+    b[2][0] = 3;
     a.afficher();
     b.afficher();
-    Matrix c;
-    c = a * b;
-    Matrix d(3,3);
-    d[0][0] = 1;
-    d[1][1] = 1;
-    d[2][2] = 1;
-    d[0][1] = 4;
-    d[0][2] = 3;
-    d[2][0] = 2;
-    d.afficher();
-    d/=2;
-    d.afficher();
-    Matrix e(3,3);
-    e = d/2;
-    e.afficher();
-    std::cout<<d.determinant()<<std::endl;
+    std::cout<<"debut"<<std::endl;
+    a.solve(b);
     return 0;
 }

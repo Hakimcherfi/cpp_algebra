@@ -317,3 +317,37 @@ Matrix operator/(Matrix const &a, double const &scalaire)
     result /= scalaire;
     return result;
 }
+
+Matrix Matrix::solve(Matrix const &b) const
+{
+    Matrix triangular = *this;
+    Matrix b2 = b;
+    double pivot;
+    if (this->li == b.li)
+    {
+        for (unsigned int i = 0; i < li; i++)
+        {
+            
+            for (unsigned int j = i + 1; j < li; j++)
+            {   
+                pivot = (triangular[j][i]) / (triangular[i][i]);
+                std::cout<<"ligne "<<i <<" pivot ligne "<< j <<" : "<<pivot<<std::endl;
+                b2[j][0] = b2[j][0]-pivot*b2[i][0];
+                for (unsigned int k = 0; k < co; k++)
+                {
+                    triangular[j][k] = triangular[j][k] - pivot * triangular[i][k];
+                }
+            }
+        }
+        Matrix res(co,1);
+        for(unsigned int i=0;i<li;i++)
+        {
+            ;
+        }
+        return triangular;
+    }
+    else{
+        ;//pas de solution
+        return Matrix(this->co,1);
+    }
+}

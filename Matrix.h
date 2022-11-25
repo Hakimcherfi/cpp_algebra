@@ -36,6 +36,7 @@ public:
     //
     double trace() const;
     double determinant() const;
+    Matrix solve(Matrix const& vecteur) const;
 };
 
 Matrix operator+(Matrix const &a, Matrix const &b);
