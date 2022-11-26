@@ -131,7 +131,7 @@ Matrix operator*(Matrix const &a, double const &scalaire)
 {
     Matrix result(a);
     result *= scalaire;
-    return a;
+    return result;
 }
 
 Matrix &Matrix::operator+=(double const &scalaire)
@@ -266,9 +266,9 @@ Matrix operator*(Matrix const &a, Matrix const &b)
         }
         return result;
     }
-    else //lever exception, dimensions incompatibles
+    else // lever exception, dimensions incompatibles
     {
-        return Matrix(1,1);
+        return Matrix(1, 1);
     }
 }
 
@@ -333,6 +333,26 @@ double Matrix::determinant() const
     else
     {
         return 0;
+    }
+}
+
+Matrix Matrix::cofactorMatrix() const
+{
+    if (li == co)
+    {
+        Matrix result(li, co);
+        for (unsigned int i = 0; i < li; i++)
+        {
+            for (unsigned int j = 0; j < co; j++)
+            {
+                result[i][j] = pow(-1, i + j) * (this->submatrix(i, j).determinant());
+            }
+        }
+        return result;
+    }
+    else
+    {
+        return *this;
     }
 }
 
@@ -442,4 +462,17 @@ Matrix Matrix::solveLS(Matrix const &b) const
 {
     Matrix transposed = this->T();
     return Matrix(transposed * (*this)).solve(transposed * b);
+}
+
+Matrix Matrix::inverse() const
+{
+    if (this->determinant() != 0)
+    {
+        return (this->cofactorMatrix().T()) * (1 / (this->determinant()));
+    }
+    else
+    {
+        std::cout << "Not invertible" << std::endl;
+        return *this;
+    }
 }

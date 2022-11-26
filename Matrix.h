@@ -26,10 +26,11 @@ public:
     bool isEqual(Matrix const &b) const;
     bool isSymetric() const;
     void afficher() const;
+    Matrix cofactorMatrix() const;
     ~Matrix();
 
     Matrix T() const; // transpose
-    //  * matrice non carree
+    //  * matrice mauvaise dimensions
     //  / matrice
     //  inverse
     //  allocations plusieurs valeurs
@@ -40,6 +41,7 @@ public:
     void permutRows(unsigned int const &r1, unsigned int const &r2);
     Matrix solve(Matrix const &vecteur) const;
     Matrix solveLS(Matrix const& vector) const;
+    Matrix inverse() const;
 };
 
 Matrix operator+(Matrix const &a, Matrix const &b);
