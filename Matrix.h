@@ -19,7 +19,9 @@ public:
     Matrix &operator*=(double const &scalaire);
     Matrix &operator*=(Matrix const &autre);
     Matrix &operator/=(double const &scalaire);
-    double *operator[](unsigned int li);
+    double *operator[](unsigned int li) const;
+    unsigned int getLi() const;
+    unsigned int getCo() const;
     Matrix submatrix(unsigned int const &li, unsigned int const &co) const;
     bool isEqual(Matrix const &b) const;
     bool isSymetric() const;
@@ -33,7 +35,6 @@ public:
     //  allocations plusieurs valeurs
     //  vecteurs propres et valeurs propres
     //
-    Matrix transpose() const;
     double trace() const;
     double determinant() const;
     void permutRows(unsigned int const &r1, unsigned int const &r2);

@@ -21,23 +21,20 @@ int main()
     double v1[4] = {1, 2, 3, 4};
     double v2[4] = {1, 1, 1, 1};
     std::cout << "res " << scalarProduct(v1, v2, 4) << std::endl;
-
-    Matrix a(3,2);
-    Matrix b(3,1);
-    a[0][0] = 0;
+    Matrix a(2,2);
+    Matrix b(2,1);
+    a[0][0] = 1;
     a[0][1] = 2;
-    a[1][0] = 4;
+    a[1][0] = 1;
     a[1][1] = 1;
-    a[2][0] = 8;
-    a[2][1] = 2;
-    b[0][0] = 4;
+    b[0][0] = 3.0000;
     b[1][0] = 2;
-    b[2][0] = 4;
     a.afficher();
     b.afficher();
-    std::cout << "debut" << std::endl;
-    Matrix x(a.solve(b));
-    x.afficher();
+    Matrix x1(a.solve(b));
+    Matrix x2(a.solveLS(b));
+    x1.afficher();
+    x2.afficher();
 
     return 0;
 }

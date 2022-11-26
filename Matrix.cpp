@@ -2,10 +2,10 @@
 
 Matrix::Matrix(unsigned int li, unsigned int co) : li(li), co(co)
 {
-    array = new double *[li];
+    array = new double *[this->li];
     for (unsigned int i = 0; i < li; i++)
     {
-        array[i] = new double[co];
+        array[i] = new double[this->co];
         for (unsigned int j = 0; j < co; j++)
         {
             array[i][j] = 0;
@@ -122,7 +122,7 @@ Matrix operator+(Matrix const &a, Matrix const &b)
     return result;
 }
 
-double *Matrix::operator[](unsigned int li)
+double *Matrix::operator[](unsigned int li) const
 {
     return array[li];
 }
@@ -219,6 +219,7 @@ double scalarProduct(double const *v1, double const *v2, unsigned int const &n)
 
 Matrix &Matrix::operator*=(Matrix const &b)
 {
+    // Uniquement si matrice carre car ne change pas les dimensions !!
     if (co == b.co && co == b.li) // uniquement produit avec matrice carre
     {
         Matrix a(*this);
@@ -234,12 +235,41 @@ Matrix &Matrix::operator*=(Matrix const &b)
     return *this;
 }
 
+unsigned int Matrix::getCo() const
+{
+    return this->co;
+}
+
+unsigned int Matrix::getLi() const
+{
+    return this->li;
+}
+
 Matrix operator*(Matrix const &a, Matrix const &b)
 {
     // matche uniquement si b est carree
-    Matrix result(a);
-    result *= b;
-    return result;
+    if (b.getCo() == a.getCo())
+    {
+        Matrix result(a);
+        result *= b;
+        return result;
+    }
+    else if (a.getCo() == b.getLi())
+    {
+        Matrix result(a.getLi(), b.getCo());
+        for (unsigned int i = 0; i < result.getLi(); i++)
+        {
+            for (unsigned int j = 0; j < result.getCo(); j++)
+            {
+                result[i][j] = scalarProduct(a[i], (b.T())[j], a.getCo());
+            }
+        }
+        return result;
+    }
+    else //lever exception, dimensions incompatibles
+    {
+        return Matrix(1,1);
+    }
 }
 
 Matrix Matrix::submatrix(unsigned int const &li, unsigned int const &co) const
@@ -408,22 +438,8 @@ Matrix Matrix::solve(Matrix const &b) const
     }
 }
 
-Matrix Matrix::transpose() const
+Matrix Matrix::solveLS(Matrix const &b) const
 {
-    Matrix result(this->co,this->li);
-    for (unsigned int i;i<li;i++)
-    {
-        for(unsigned int j;j<co;j++)
-        {
-            result[j][i] = this->array[i][j];
-        }
-    }
-    return result;
-
-}
-
-Matrix Matrix::solveLS(Matrix const& b) const
-{
-    Matrix transposed = this->transpose();
-    return Matrix(transposed*(*this)).solve(transposed*b);
+    Matrix transposed = this->T();
+    return Matrix(transposed * (*this)).solve(transposed * b);
 }
