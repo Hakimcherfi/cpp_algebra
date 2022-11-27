@@ -59,5 +59,14 @@ int main()
     L = chol.cholesky();
     L.afficher();
     (L*(L.T())).afficher();
+    //Not computable cholesky factorization
+    Matrix chol2;
+    
+    chol2[0][0] = 1;
+    chol2[1][1] = 1;
+    chol2[0][1] = 1;
+    chol2[1][0] = 1;
+    chol2.afficher();
+    chol2.cholesky().afficher();
     return 0;
 }

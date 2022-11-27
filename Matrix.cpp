@@ -485,6 +485,11 @@ Matrix Matrix::cholesky() const
         Matrix A(*this);
         for (unsigned int i = 0; i < li; i++)
         {
+            if (A[i][i] <= 0)
+            {
+                std::cout << "Cholesky factorization not computed : matrix not positive definite" << std::endl;
+                return *this;
+            }
             L[i][i] = pow(A[i][i], 0.5);
             for (unsigned int j(i + 1); j < li; j++)
             {
@@ -499,7 +504,7 @@ Matrix Matrix::cholesky() const
     }
     else
     {
-        std::cout << "Cholesky could not be computed" << std::endl;
+        std::cout << "Cholesky factorization not computed : matrix must be symmetric" << std::endl;
         return *this;
     }
 }
