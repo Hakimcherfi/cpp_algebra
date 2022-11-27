@@ -49,5 +49,15 @@ int main()
     test.afficher();
     (test.inverse()*test).afficher();
     (test*(test.inverse())).afficher();
+    Matrix chol(2,2);
+    chol[0][0] = 2;
+    chol[0][1] = 1;
+    chol[1][0] = 1;
+    chol[1][1] = 3;
+    chol.afficher();
+    Matrix L(chol);
+    L = chol.cholesky();
+    L.afficher();
+    (L*(L.T())).afficher();
     return 0;
 }

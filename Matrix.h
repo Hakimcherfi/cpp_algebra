@@ -27,6 +27,7 @@ public:
     bool isSymetric() const;
     void afficher() const;
     Matrix cofactorMatrix() const;
+    Matrix cholesky() const;
     ~Matrix();
 
     Matrix T() const; // transpose

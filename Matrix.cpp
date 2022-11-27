@@ -476,3 +476,30 @@ Matrix Matrix::inverse() const
         return *this;
     }
 }
+
+Matrix Matrix::cholesky() const
+{
+    if (this->isSymetric()) // ajouter definie positive
+    {
+        Matrix L(li, li);
+        Matrix A(*this);
+        for (unsigned int i = 0; i < li; i++)
+        {
+            L[i][i] = pow(A[i][i], 0.5);
+            for (unsigned int j(i + 1); j < li; j++)
+            {
+                L[j][i] = (A[j][i]) / (L[i][i]);
+                for (unsigned int k(i + 1); k <= j; k++)
+                {
+                    A[j][k] = (A[j][k]) - ((L[j][i]) * (L[k][i]));
+                }
+            }
+        }
+        return L;
+    }
+    else
+    {
+        std::cout << "Cholesky could not be computed" << std::endl;
+        return *this;
+    }
+}
